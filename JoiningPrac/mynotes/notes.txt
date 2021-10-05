@@ -1,0 +1,1 @@
+Scaffold-DbContext "Data Source=(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=localhost)(PORT=1521))(CONNECT_DATA=(SERVICE_NAME=XEPDB1)));Persist Security Info=True;User Id=student1;Password=oracle;" Oracle.EntityFrameworkCore -OutputDir Models -force
