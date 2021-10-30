@@ -20,6 +20,9 @@ namespace JoiningPrac.Models
         public virtual DbSet<Dept> Depts { get; set; }
         public virtual DbSet<Student1> Student1s { get; set; }
         public virtual DbSet<Student2> Student2s { get; set; }
+        public virtual DbSet<Employees> Employeess { get; set; }
+        public virtual DbSet<Department> Departments { get; set; }
+        public virtual DbSet<Designation> Designations { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -55,7 +58,7 @@ namespace JoiningPrac.Models
 
             modelBuilder.Entity<Student1>(entity =>
             {
-                entity.HasNoKey();
+                entity.HasKey(e =>e.Id);
 
                 entity.ToTable("STUDENT1");
 
@@ -91,6 +94,62 @@ namespace JoiningPrac.Models
                     .HasMaxLength(100)
                     .IsUnicode(false)
                     .HasColumnName("NAME");
+            });
+
+            modelBuilder.Entity<Employees>(entity =>
+            {
+                entity.HasKey(e => e.Eid);
+
+                entity.ToTable("EMPLOYEES");
+
+                entity.Property(e => e.Ename)
+                    .HasMaxLength(100)
+                    .IsUnicode(false)
+                    .HasColumnName("ENAME");
+
+                entity.Property(e => e.Eid)
+                    .HasColumnType("NUMBER(38)")
+                    .HasColumnName("EID");
+
+                entity.Property(e => e.Did)
+                    .HasColumnType("NUMBER(38)")
+                    .HasColumnName("DID");
+
+                entity.Property(e => e.Dgid)
+                    .HasColumnType("NUMBER(38)")
+                    .HasColumnName("DGID");
+            });
+
+            modelBuilder.Entity<Department>(entity =>
+            {
+                entity.HasKey(e => e.Did);
+
+                entity.ToTable("DEPARTMENT");
+
+                entity.Property(e => e.Dname)
+                    .HasMaxLength(100)
+                    .IsUnicode(false)
+                    .HasColumnName("DNAME");
+
+                entity.Property(e => e.Did)
+                    .HasColumnType("NUMBER(38)")
+                    .HasColumnName("DID");
+            });
+
+            modelBuilder.Entity<Designation>(entity =>
+            {
+                entity.HasKey(e => e.Dgid);
+
+                entity.ToTable("DESIGNATION");
+
+                entity.Property(e => e.Dgname)
+                    .HasMaxLength(100)
+                    .IsUnicode(false)
+                    .HasColumnName("DGNAME");
+
+                entity.Property(e => e.Dgid)
+                    .HasColumnType("NUMBER(38)")
+                    .HasColumnName("DGID");
             });
 
             OnModelCreatingPartial(modelBuilder);

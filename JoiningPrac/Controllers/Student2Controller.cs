@@ -14,6 +14,13 @@ namespace JoiningPrac
     {
         public int Id { get; set; }
     }
+
+    public class SelfClass3
+    { 
+        public decimal? Id { get; set; }
+        public string Name { get; set; }
+        public string DeptName { get; set; }
+    }
     [Route("api/[controller]")]
     [ApiController]
     public class Student2Controller : ControllerBase
@@ -262,8 +269,48 @@ namespace JoiningPrac
             });
         }
         [HttpPost("CustomJoining")]
-        //public async Task<ActionResult<ResponseDto>> Joining([FromBody] )
+        public async Task<ActionResult<ResponseDto>> Joining([FromBody] SelfClass2 Input)
+        {
+            if (Input.Id == 0)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, new ResponseDto
+                {
+                    Message = "Please Input the ID field",
+                    Success = false,
+                    Payload = null
+                });
+            }
 
+            List<SelfClass3> selfClass3s = await (from stu2 in _context.Student2s
+                                                            .Where(i => i.Id == Input.Id)
+                                                  from dept in _context.Depts
+                                                            .Where(i => stu2.Deptid == i.Id)
+                                                  select new SelfClass3 
+                                                  {
+                                                      Id = stu2.Id,
+                                                      Name = stu2.Name,
+                                                      DeptName = dept.Name
+                                                  })
+                                                            .ToListAsync();
+
+            if (selfClass3s.Count <= 0) 
+            {
+                return StatusCode(StatusCodes.Status404NotFound, new ResponseDto
+                {
+                    Message = "Data is not found for this ID",
+                    Success = false,
+                    Payload = null
+                });
+            }
+            return StatusCode(StatusCodes.Status200OK, new ResponseDto
+            {
+                Message = "Joining",
+                Success = true,
+                Payload = selfClass3s
+            });
+
+
+        }
 
         private bool Student2Exists(decimal? id)
         {

@@ -197,7 +197,7 @@ namespace JoiningPrac
         }
 
         // DELETE: api/Depts/5
-        [HttpDelete("DeleteDept")]
+        [HttpPost("DeleteDept")]
         public async Task<ActionResult<ResponseDto>> DeleteDept([FromBody] SelfClass1 input)
         {
             if (input.Id == 0)
